@@ -14,6 +14,9 @@ client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 
 app = FastAPI(title="ElevenLabs Gateway API")
 
+class TTSRequest(BaseModel):
+    text: str
+    voice_id: str
 
 @app.get("/health")
 def health():
