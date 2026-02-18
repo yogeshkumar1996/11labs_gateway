@@ -23,6 +23,7 @@ def health():
 @app.post("/tts")
 def text_to_speech(payload: dict):
     try:
+        print("inside the main handler")
         text = payload["text"]
         voice_id = payload["voice_id"]
 
