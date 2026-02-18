@@ -21,11 +21,9 @@ def health():
 
 
 @app.post("/tts")
-def text_to_speech(payload: dict):
+def text_to_speech(request: TTSRequest):
     try:
         print("inside the main handler")
-        text = payload["text"]
-        voice_id = payload["voice_id"]
 
        # Generate audio from ElevenLabs
         audio = client.text_to_speech.convert(
