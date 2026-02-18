@@ -15,29 +15,27 @@ client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 app = FastAPI(title="ElevenLabs Gateway API")
 
 
-# -----------------------------
-# Request model
-# -----------------------------
-class TTSRequest(BaseModel):
-    text: str
-    voice_id: str
+@app.get("/health")
+def health():
+    return {"status": "ok"}
 
 
-# -----------------------------
-# Gateway endpoint
-# -----------------------------
 @app.post("/tts")
-def text_to_speech(request: TTSRequest):
+def text_to_speech(payload: dict):
     try:
-        response = client.text_to_speech.with_raw_response.convert(
-            text=request.text,
-            voice_id=request.voice_id
-        )
+        text = payload["text"]
+        voice_id = payload["voice_id"]
 
-        char_cost = response.headers.get("x-character-count")
-        request_id = response.headers.get("request-id")
+        # ✅ CORRECT usage (context manager)
+        with client.text_to_speech.with_raw_response.convert(
+            text=text,
+            voice_id=voice_id
+        ) as response:
 
-        audio_data = response.data
+            char_cost = response.headers.get("x-character-count")
+            request_id = response.headers.get("request-id")
+
+            audio_data = response.data
 
         return Response(
             content=audio_data,
@@ -47,7 +45,6 @@ def text_to_speech(request: TTSRequest):
                 "x-request-id": request_id or "unknown",
             },
         )
-
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
