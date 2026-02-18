@@ -27,25 +27,24 @@ def text_to_speech(payload: dict):
         text = payload["text"]
         voice_id = payload["voice_id"]
 
-        # ✅ CORRECT usage (context manager)
-        with client.text_to_speech.with_raw_response.convert(
-            text=text,
-            voice_id=voice_id
-        ) as response:
+       # Generate audio from ElevenLabs
+        audio = client.text_to_speech.convert(
+            text=request.text,
+            voice_id=request.voice_id,
+            model_id="eleven_multilingual_v2",
+            output_format="mp3_44100_128",
+        )
 
-            char_cost = response.headers.get("x-character-count")
-            request_id = response.headers.get("request-id")
-
-            audio_data = response.data
-
+        # Return as downloadable MP3 file
+        print("sending response")
         return Response(
-            content=audio_data,
+            content=audio,
             media_type="audio/mpeg",
             headers={
-                "x-character-count": char_cost or "unknown",
-                "x-request-id": request_id or "unknown",
-            },
+                "Content-Disposition": "attachment; filename=voice.mp3"
+            }
         )
+        print("response sent")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
