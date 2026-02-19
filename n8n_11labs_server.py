@@ -29,7 +29,7 @@ def text_to_speech(request: TTSRequest):
         print("inside the main handler")
 
        # Generate audio from ElevenLabs
-        audio = client.text_to_speech.convert(
+        audio_stream = client.text_to_speech.convert(
             text=request.text,
             voice_id=request.voice_id,
             model_id="eleven_multilingual_v2",
