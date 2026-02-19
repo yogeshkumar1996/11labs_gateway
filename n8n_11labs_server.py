@@ -8,7 +8,8 @@ import uvicorn
 # -----------------------------
 # CONFIG
 # -----------------------------
-ELEVENLABS_API_KEY = "sk_3b98d8ce13673dbaa871a04c858b37f6c37f54d52c8d8291"
+# ELEVENLABS_API_KEY = "sk_3b98d8ce13673dbaa871a04c858b37f6c37f54d52c8d8291"
+ELEVENLABS_API_KEY="sk_421075b5bc373d99d0b7eccf3f0a17b2b73eb97e8ba2e583"
 
 client = ElevenLabs(api_key=ELEVENLABS_API_KEY)
 
