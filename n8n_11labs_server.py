@@ -37,9 +37,10 @@ def text_to_speech(request: TTSRequest):
         )
 
         # Return as downloadable MP3 file
+        audio_bytes = b"".join(audio_stream)
         print("sending response")
         return Response(
-            content=audio,
+            content=audio_bytes,
             media_type="audio/mpeg",
             headers={
                 "Content-Disposition": "attachment; filename=voice.mp3"
